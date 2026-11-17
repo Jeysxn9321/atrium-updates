@@ -55,6 +55,8 @@ $manifestPath=Join-Path $folder 'latest.json'
 if(-not (Test-Path -LiteralPath $zipPath) -or -not (Test-Path -LiteralPath $manifestPath)) { throw 'Release files missing.' }
 $manifest=Get-Content -LiteralPath $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
 Assert-SignedManifest $manifest
+try { [void][version]([string]$manifest.version) }
+catch { throw 'The release revision exceeds Windows System.Version limits. Run Corriger-Version-Atrium.ps1 on the original mpv/home-server.ps1, restart Atrium, and publish again.' }
 if([string]$manifest.version -ne [string]$release.version) { throw 'Version mismatch.' }
 if([version]$manifest.version -le [version]$previous.version) { throw 'Version is not newer than the published release.' }
 if([long](Get-Item -LiteralPath $zipPath).Length -ne [long]$manifest.size) { throw 'ZIP size mismatch.' }
