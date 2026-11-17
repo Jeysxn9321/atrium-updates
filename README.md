@@ -16,8 +16,9 @@ The update currently advertised by this repository is still **2026.10.10.112233*
 
 1. Start the original Windows Atrium on the creator PC and check `http://localhost:18731/`. Locate the real folder containing `mpv/home.html` and `mpv/home-server.ps1`. The separate `C:\Users\Jvson\workspace\Atrium` folder with `config.xml` and `Atrium.wgt` is a Samsung/Tizen app, **not** this Windows server.
 2. Integrate Asian Dramas into those **actual local Windows server files** first. Use only a compatible, backed-up patch; do not overwrite a newer version with an old file. Check that the page shows one **Asian Dramas** tab with All / Korean / Japanese filters and the Stremio catalogs work.
-3. Ensure `git` and `gh` are installed, `gh auth login` has been completed, and the connected account has push access to this repository.
-4. Download and review [Publier-Asian-Dramas.ps1](Publier-Asian-Dramas.ps1); run it from PowerShell on the owner PC:
+3. **Fix the original version generator once**: Windows `System.Version` cannot compare the old six-digit `HHmmss` revision when it exceeds 65535. The published `2026.10.10.112233` therefore does not compare correctly for the Update button. Download [Corriger-Version-Atrium.ps1](Corriger-Version-Atrium.ps1) and run it with the actual Windows server file (NOT the Samsung TV project): `powershell -NoProfile -ExecutionPolicy Bypass -File .\Corriger-Version-Atrium.ps1 -HomeServer "C:\<REAL-ATRIUM-FOLDER>\mpv\home-server.ps1"`. The script backs up the file and changes the generated revision to four-digit `HHmm`. **Restart Atrium after this fix.** It does not modify any release already published.
+4. Ensure `git` and `gh` are installed, `gh auth login` has been completed, and the connected account has push access to this repository.
+5. Download and review [Publier-Asian-Dramas.ps1](Publier-Asian-Dramas.ps1); run it from PowerShell on the owner PC:
 
    ```powershell
    powershell -NoProfile -ExecutionPolicy Bypass -File ".\Publier-Asian-Dramas.ps1"
